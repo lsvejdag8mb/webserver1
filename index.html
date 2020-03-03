@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Moje stranka pro server</title>
+    <script>
+        function ukazCitac() {
+            let url = `http://localhost:8080/citac`;
+            fetch(url).then(function(response) {
+                response.text().then(function(text) {
+                    let obj = JSON.parse(text);
+                    document.getElementById("vystupCitac").innerHTML =
+                        "<b>" + obj.citac + "</b> (" + obj.popis + ")";
+                });
+            });
+        }
+
+    </script>
 </head>
-<body>
+<body onload="ukazCitac()">
 
 <h1>Moje stranka pro server</h1>
 test testik testicek
 
+<div id="vystupCitac">...</div>
 
 </body>
 </html>
