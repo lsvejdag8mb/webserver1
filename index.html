@@ -4,7 +4,32 @@
     <meta charset="UTF-8">
     <title>Moje stranka pro server</title>
     <script>
+        function odesli() {
+            let v = document.getElementById("zprava").value; //nacteni zpravy
+            document.getElementById("zprava").value = ""; //vymazani textu zpravu z inputu
+            let url = `http://localhost:8080/chat/add?msg=`+v;
+            fetch(url).then(function(response) {
+                response.text().then(function(text) {
+                    //nemusim nic delat
+                });
+            });
+        }
+        function ukazZpravy() {
+            let url = `http://localhost:8080/chat/list`;
+            fetch(url).then(function(response) {
+                response.text().then(function(text) {
+                    let obj = JSON.parse(text);
+                    let s = "";
+                    for (let msg of obj.messages.splice(-100)) {
+                        s = s + msg + "<br>";
+                    }
+                    document.getElementById("zpravy").innerHTML = s;
+                });
+            });
+        }
         function ukazCitac() {
+            setInterval(ukazZpravy, 1000);
+
             let url = `http://localhost:8080/citac`;
             fetch(url).then(function(response) {
                 response.text().then(function(text) {
@@ -23,6 +48,12 @@
 test testik testicek
 
 <div id="vystupCitac">...</div>
+
+<h1>Chat1</h1>
+
+<div id="zpravy"></div>
+<input type="text" id="zprava">
+<input type="button" value="Odesli" onclick="odesli()">
 
 </body>
 </html>
