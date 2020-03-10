@@ -26,8 +26,10 @@ function main(req,res) {
     } else if (req.url.startsWith("/chat/add")) {
         let q = url.parse(req.url, true);
         console.log(q.query);
-        let s = q.query.msg;
-        zpravy.push(s);
+        let o = {};
+        o.text = q.query.msg;
+        o.time = new Date();
+        zpravy.push(o);
         let obj = {};
         obj.messages = zpravy;
         res.writeHead(200, {"Content-type":"application/json"});

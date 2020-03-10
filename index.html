@@ -21,7 +21,7 @@
                     let obj = JSON.parse(text);
                     let s = "";
                     for (let msg of obj.messages.splice(-100)) {
-                        s = s + msg + "<br>";
+                        s = s + msg.time + "<br><b>" + msg.text + "</b><br>";
                     }
                     document.getElementById("zpravy").innerHTML = s;
                 });
@@ -52,7 +52,8 @@ test testik testicek
 <h1>Chat1</h1>
 
 <div id="zpravy"></div>
-<input type="text" id="zprava">
+<input type="text" id="prezdivka" placeholder="přezdívka">
+<input type="text" id="zprava" placeholder="zpráva">
 <input type="button" value="Odesli" onclick="odesli()">
 
 </body>
