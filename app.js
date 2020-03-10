@@ -28,6 +28,7 @@ function main(req,res) {
         console.log(q.query);
         let o = {};
         o.text = q.query.msg;
+        o.nickname = q.query.nick;
         o.time = new Date();
         zpravy.push(o);
         let obj = {};

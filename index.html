@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>Moje stranka pro server</title>
     <script>
+        const HOST = window.location.protocol + "//" + window.location.hostname + ((window.location.port) ? ":" + window.location.port : "");
         function odesli() {
             let v = document.getElementById("zprava").value; //nacteni zpravy
+            let n = document.getElementById("prezdivka").value;
             document.getElementById("zprava").value = ""; //vymazani textu zpravu z inputu
-            let url = `http://localhost:8080/chat/add?msg=`+v;
+            let url = HOST+"/chat/add?msg="+v+"&nick="+n;
             fetch(url).then(function(response) {
                 response.text().then(function(text) {
                     //nemusim nic delat
@@ -15,13 +17,13 @@
             });
         }
         function ukazZpravy() {
-            let url = `http://localhost:8080/chat/list`;
+            let url = HOST+"/chat/list";
             fetch(url).then(function(response) {
                 response.text().then(function(text) {
                     let obj = JSON.parse(text);
                     let s = "";
                     for (let msg of obj.messages.splice(-100)) {
-                        s = s + msg.time + "<br><b>" + msg.text + "</b><br>";
+                        s = s + msg.time + " " + msg.nickname + "<br><b>" + msg.text + "</b><br>";
                     }
                     document.getElementById("zpravy").innerHTML = s;
                 });
@@ -30,7 +32,7 @@
         function ukazCitac() {
             setInterval(ukazZpravy, 1000);
 
-            let url = `http://localhost:8080/citac`;
+            let url = HOST+"/citac";
             fetch(url).then(function(response) {
                 response.text().then(function(text) {
                     let obj = JSON.parse(text);
