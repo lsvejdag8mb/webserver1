@@ -1,9 +1,15 @@
 const http = require("http");
 const fs = require("fs");
 const url = require("url");
+const dateformat = require("dateformat");
+
+const DATA_FILE = "data.json";
 
 let citac = 0;
 let zpravy = new Array();
+if (fs.existsSync(DATA_FILE)) {
+    zpravy = JSON.parse(fs.readFileSync(DATA_FILE));
+}
 
 function main(req,res) {
     console.log(req.url);
@@ -29,8 +35,9 @@ function main(req,res) {
         let o = {};
         o.text = q.query.msg;
         o.nickname = q.query.nick;
-        o.time = new Date();
+        o.time =  dateformat(new Date(), "dd.mm.yyyy HH:MM:ss");
         zpravy.push(o);
+        fs.writeFileSync(DATA_FILE, JSON.stringify(zpravy));
         let obj = {};
         obj.messages = zpravy;
         res.writeHead(200, {"Content-type":"application/json"});

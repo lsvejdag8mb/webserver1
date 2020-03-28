@@ -23,7 +23,8 @@
                     let obj = JSON.parse(text);
                     let s = "";
                     for (let msg of obj.messages.splice(-100)) {
-                        s = s + msg.time + " " + msg.nickname + "<br><b>" + msg.text + "</b><br>";
+                        s = s + "<span style=\"font-size:75%; color:gray\">" +  msg.time + " " + msg.nickname + "</span><br><b>" + msg.text + "</b><br>";
+
                     }
                     document.getElementById("zpravy").innerHTML = s;
                 });
