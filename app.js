@@ -30,18 +30,30 @@ function main(req,res) {
         res.writeHead(200, {"Content-type":"application/json"});
         res.end(JSON.stringify(obj));
     } else if (req.url.startsWith("/chat/add")) {
-        let q = url.parse(req.url, true);
-        console.log(q.query);
-        let o = {};
-        o.text = q.query.msg;
-        o.nickname = q.query.nick;
-        o.time =  dateformat(new Date(), "dd.mm.yyyy HH:MM:ss");
-        zpravy.push(o);
-        fs.writeFileSync(DATA_FILE, JSON.stringify(zpravy));
-        let obj = {};
-        obj.messages = zpravy;
-        res.writeHead(200, {"Content-type":"application/json"});
-        res.end(JSON.stringify(obj));
+        let data = "";
+        req.on('data', function (chunk) {
+            try {
+                data += chunk;
+            } catch (e) {
+                console.error(e);
+            }
+        })
+        req.on('end', function () {
+            req.rawBody = data;
+            if (data) {
+                let body = JSON.parse(data);
+                let o = {};
+                o.text = body.msg;
+                o.nickname = body.nick;
+                o.time =  dateformat(new Date(), "dd.mm.yyyy HH:MM:ss");
+                zpravy.push(o);
+                fs.writeFileSync(DATA_FILE, JSON.stringify(zpravy));
+                let obj = {};
+                obj.messages = zpravy;
+                res.writeHead(200, {"Content-type":"application/json"});
+                res.end(JSON.stringify(obj));
+            }
+        });
     } else {
         res.writeHead(404, {"Content-type":"text/html"});
         res.end();

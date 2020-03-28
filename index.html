@@ -9,8 +9,14 @@
             let v = document.getElementById("zprava").value; //nacteni zpravy
             let n = document.getElementById("prezdivka").value;
             document.getElementById("zprava").value = ""; //vymazani textu zpravu z inputu
-            let url = HOST+"/chat/add?msg="+v+"&nick="+n;
-            fetch(url).then(function(response) {
+            let url = HOST+"/chat/add";
+            let body = {};
+            body.msg = v;
+            body.nick = n;
+            let options = {};
+            options.method = "POST";
+            options.body = JSON.stringify(body);
+            fetch(url, options).then(function(response) {
                 response.text().then(function(text) {
                     //nemusim nic delat
                 });
